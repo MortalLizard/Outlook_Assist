@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OfficeApp xmlns="http://schemas.microsoft.com/office/appforoffice/1.1"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xmlns:bt="http://schemas.microsoft.com/office/officeappbasictypes/1.0"
+           xmlns:mailappor="http://schemas.microsoft.com/office/mailappversionoverrides/1.0"
+           xsi:type="MailApp">
+
+  <Id>PUT-YOUR-NEW-GUID-HERE</Id>
+  <Version>1.0.0.0</Version>
+  <ProviderName>Outlook Assist</ProviderName>
+  <DefaultLocale>en-US</DefaultLocale>
+  <DisplayName DefaultValue="Outlook Assist: Draft with AI"/>
+  <Description DefaultValue="Draft replies with your local Python email assistant."/>
+
+  <IconUrl DefaultValue="https://localhost:3000/assets/icon-32.png"/>
+  <HighResolutionIconUrl DefaultValue="https://localhost:3000/assets/icon-80.png"/>
+  <SupportUrl DefaultValue="https://localhost:3000/"/>
+
+  <Hosts><Host Name="Mailbox"/></Hosts>
+
+  <Requirements>
+    <Sets DefaultMinVersion="1.5">
+      <Set Name="Mailbox" MinVersion="1.5"/>
+    </Sets>
+  </Requirements>
+
+  <FormSettings>
+    <Form xsi:type="ItemRead">
+      <DesktopSettings>
+        <SourceLocation DefaultValue="https://localhost:3000/taskpane.html"/>
+      </DesktopSettings>
+    </Form>
+    <Form xsi:type="ItemEdit">
+      <DesktopSettings>
+        <SourceLocation DefaultValue="https://localhost:3000/taskpane.html"/>
+      </DesktopSettings>
+    </Form>
+  </FormSettings>
+
+  <Permissions>ReadWriteItem</Permissions>
+
+  <Rule xsi:type="RuleCollection" Mode="Or">
+    <Rule xsi:type="ItemIs" ItemType="Message" FormType="Read"/>
+    <Rule xsi:type="ItemIs" ItemType="Message" FormType="Edit"/>
+  </Rule>
+
+  <DisableEntityHighlighting>false</DisableEntityHighlighting>
+
+  <VersionOverrides xmlns="http://schemas.microsoft.com/office/mailappversionoverrides/1.0" xsi:type="VersionOverridesV1_1">
+    <Hosts>
+      <Host xsi:type="MailHost">
+        <Runtimes>
+          <Runtime resid="TaskPane.Url" lifetime="long"/>
+          <Override type="javascript" resid="Functions.Script.Url"/>
+        </Runtimes>
+
+        <DesktopFormFactor>
+          <ExtensionPoint xsi:type="MessageReadCommandSurface">
+            <OfficeTab id="TabDefault">
+              <Group id="msgread.group" label="Assist">
+                <Control xsi:type="Button" id="msgread.draft">
+                  <Label resid="res.label.draft"/>
+                  <Supertip>
+                    <Title resid="res.tip.title"/>
+                    <Description resid="res.tip.desc"/>
+                  </Supertip>
+                  <Icon>
+                    <bt:Image size="16" resid="res.icon.16"/>
+                    <bt:Image size="32" resid="res.icon.32"/>
+                    <bt:Image size="80" resid="res.icon.80"/>
+                  </Icon>
+                  <Action xsi:type="ExecuteFunction">
+                    <FunctionName>draftReplyFromRead</FunctionName>
+                  </Action>
+                </Control>
+              </Group>
+            </OfficeTab>
+          </ExtensionPoint>
+
+          <ExtensionPoint xsi:type="MessageComposeCommandSurface">
+            <OfficeTab id="TabDefault">
+              <Group id="msgcompose.group" label="Assist">
+                <Control xsi:type="Button" id="msgcompose.draft">
+                  <Label resid="res.label.draft"/>
+                  <Supertip>
+                    <Title resid="res.tip.title"/>
+                    <Description resid="res.tip.desc"/>
+                  </Supertip>
+                  <Icon>
+                    <bt:Image size="16" resid="res.icon.16"/>
+                    <bt:Image size="32" resid="res.icon.32"/>
+                    <bt:Image size="80" resid="res.icon.80"/>
+                  </Icon>
+                  <Action xsi:type="ExecuteFunction">
+                    <FunctionName>draftReplyInCompose</FunctionName>
+                  </Action>
+                </Control>
+              </Group>
+            </OfficeTab>
+          </ExtensionPoint>
+        </DesktopFormFactor>
+      </Host>
+    </Hosts>
+
+    <Resources>
+      <bt:Images>
+        <bt:Image id="res.icon.16" DefaultValue="https://localhost:3000/assets/icon-16.png"/>
+        <bt:Image id="res.icon.32" DefaultValue="https://localhost:3000/assets/icon-32.png"/>
+        <bt:Image id="res.icon.80" DefaultValue="https://localhost:3000/assets/icon-80.png"/>
+      </bt:Images>
+      <bt:Urls>
+        <bt:Url id="TaskPane.Url" DefaultValue="https://localhost:3000/taskpane.html"/>
+        <bt:Url id="Functions.Script.Url" DefaultValue="https://localhost:3000/commands.js"/>
+      </bt:Urls>
+      <bt:ShortStrings>
+        <bt:String id="res.label.draft" DefaultValue="Draft with AI"/>
+        <bt:String id="res.tip.title" DefaultValue="Draft with AI"/>
+      </bt:ShortStrings>
+      <bt:LongStrings>
+        <bt:String id="res.tip.desc" DefaultValue="Generate a reply using your local assistant."/>
+      </bt:LongStrings>
+    </Resources>
+  </VersionOverrides>
+</OfficeApp>
